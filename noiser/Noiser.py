@@ -16,7 +16,7 @@ class Noiser():
         
     def __call__(self,tok):
         err = [0] * len(tok)
-        n_noises = random.randrange(0,min(self.args.max_total_noises+1,int(len(tok)*self.args.max_ratio_noises)+1))
+        n_noises = random.randrange(0,min(self.args.max_total+1,int(len(tok)*self.args.max_ratio)+1))
         if n_noises:
             indexs = [i for i in range(len(tok))]
             random.shuffle(indexs)
