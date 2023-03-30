@@ -24,14 +24,14 @@ class Noiser():
                 if random.random() < 0.3 :
                     if self.inflect is not None and random.random() < 0.5:
                         new_tok, new_type = self.inflect(tok[i])
-                        if new_tok is not None and self.seen[tok[i]+'=>'+new_tok] < self.args.max_seen:
+                        if new_tok is not None and self.seen[tok[i]+'=>'+new_tok] < self.args.max_occ:
                             self.seen[tok[i]+'=>'+new_tok] += 1
                             logging.debug('{} => {} ({}) [{}]'.format(tok[i],new_tok,self.seen[tok[i]+'=>'+new_tok], new_type))
                             tok[i] = new_tok
                             err[i] = 1
                     elif self.hphone is not None:
                         new_tok, new_type = self.hphone(tok[i])
-                        if new_tok is not None and self.seen[tok[i]+'=>'+new_tok] < self.args.max_seen:
+                        if new_tok is not None and self.seen[tok[i]+'=>'+new_tok] < self.args.max_occ:
                             self.seen[tok[i]+'=>'+new_tok] += 1
                             logging.debug('{} => {} ({}) [{}]'.format(tok[i],new_tok,self.seen[tok[i]+'=>'+new_tok], new_type))
                             tok[i] = new_tok
@@ -39,7 +39,7 @@ class Noiser():
                     
                 if err[i] == 0 and tok[i].isalpha(): ### all chars must be alphabetic (words containing this type of chars are not allowed: 6!#%&?)
                     new_tok, new_type = self.misspell(tok[i])
-                    if new_tok is not None and self.seen[tok[i]+'=>'+new_tok] < self.args.max_seen:
+                    if new_tok is not None and self.seen[tok[i]+'=>'+new_tok] < self.args.max_occ:
                         self.seen[tok[i]+'=>'+new_tok] += 1
                         logging.debug('{} => {} ({}) [{}]'.format(tok[i],new_tok,self.seen[tok[i]+'=>'+new_tok], new_type))
                         tok[i] = new_tok

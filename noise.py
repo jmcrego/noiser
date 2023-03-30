@@ -15,7 +15,7 @@ if __name__ == '__main__':
     parser.add_argument('--hphone', type=str, default=None, help="homophone replacements (None)")
     parser.add_argument('--max_ratio_noises', type=float, default=0.5, help='max ratio noises per sentence (0.5)')
     parser.add_argument('--max_total_noises', type=int, default=5, help='max total noises per sentence (5)')
-    parser.add_argument('--max_seen', type=int, default=100, help='max occurrences for the pair original/noised word (100)')
+    parser.add_argument('--max_occ', type=int, default=100, help='max occurrences for the pair original/noised word (100)')
     parser.add_argument('--seed', type=int, default=0, help='seed for randomness (0)')
     parser.add_argument('--debug', action='store_true', help='Debug mode')
     args = parser.parse_args()
