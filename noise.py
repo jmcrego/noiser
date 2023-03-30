@@ -25,7 +25,7 @@ if __name__ == '__main__':
     
     onmttok = pyonmttok.Tokenizer('conservative', joiner_annotate=False)
     logging.info('Built onmttok')
-    noiser = Noiser(args,inflect=args.inflect,hphone=args.hhone)
+    noiser = Noiser(args,inflect=args.inflect,hphone=args.hphone)
     logging.info('Built noiser')
     
     logging.info('Reading from STDIN')
