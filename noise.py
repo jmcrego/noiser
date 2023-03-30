@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--inflect', type=str, default=None, help="inflection replacements (None)")
-    parser.add_argument('--homophone', type=str, default=None, help="homophone replacements (None)")
+    parser.add_argument('--hphone', type=str, default=None, help="homophone replacements (None)")
     parser.add_argument('--max_ratio_noises', type=float, default=0.5, help='max ratio noises per sentence (0.5)')
     parser.add_argument('--max_total_noises', type=int, default=5, help='max total noises per sentence (5)')
     parser.add_argument('--max_seen', type=int, default=100, help='max occurrences for the pair original/noised word (100)')
@@ -24,8 +24,11 @@ if __name__ == '__main__':
         random.seed(args.seed)
     
     onmttok = pyonmttok.Tokenizer('conservative', joiner_annotate=False)
-    noiser = Noiser(args,inflect=args.inflect,homophone=args.homophone)
+    logging.info('Built onmttok')
+    noiser = Noiser(args,inflect=args.inflect,hphone=args.hhone)
+    logging.info('Built noiser')
     
+    logging.info('Reading from STDIN')
     tic = time.time()
     for l in sys.stdin:
         tok, err = noiser(onmttok(l.rstrip()))

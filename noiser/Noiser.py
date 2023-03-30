@@ -5,11 +5,11 @@ from noiser.Misspell import Misspell
 from noiser.Replace import Replace
 
 class Noiser():
-    def __init__(self, args, inflect=None, homophone=None):
+    def __init__(self, args, inflect=None, hphone=None):
         self.args = args
         self.misspell = Misspell()
         self.inflect = Replace(inflect,'inflect') if inflect is not None else None
-        self.homophone = Replace(homophone,'homophone') if homophone is not None else None
+        self.hphone = Replace(hphone,'hphone') if hphone is not None else None
         self.seen = defaultdict(int)
         self.nl, self.nt, self.nl_noised, self.nt_noised = 0, 0, 0, 0
         self.stats = defaultdict(int)
@@ -29,8 +29,8 @@ class Noiser():
                             logging.debug('{} => {} ({}) [{}]'.format(tok[i],new_tok,self.seen[tok[i]+'=>'+new_tok], new_type))
                             tok[i] = new_tok
                             err[i] = 1
-                    elif self.homophone is not None:
-                        new_tok, new_type = self.homophone(tok[i])
+                    elif self.hphone is not None:
+                        new_tok, new_type = self.hphone(tok[i])
                         if new_tok is not None and self.seen[tok[i]+'=>'+new_tok] < self.args.max_seen:
                             self.seen[tok[i]+'=>'+new_tok] += 1
                             logging.debug('{} => {} ({}) [{}]'.format(tok[i],new_tok,self.seen[tok[i]+'=>'+new_tok], new_type))
@@ -59,6 +59,6 @@ class Noiser():
         logging.info('output {} lines ({} noised) with {} tokens ({} noised)'.format(self.nl,self.nl_noised,self.nt,self.nt_noised))
         self.misspell.report()
         self.inflect.report()
-        self.homophone.report()
+        self.hphone.report()
         for k, v in sorted(self.stats.items(), key=lambda item: item[0], reverse=False): #if reverse, sorted in descending order
             logging.info('len={}\t{}'.format(k,v))

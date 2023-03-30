@@ -121,6 +121,7 @@ class Misspell():
         self.w_vowel_change = 10
         self.w_consonne_double = 10
         self.stats_types = defaultdict(int)
+        logging.info('Built Misspell')
 
     def __call__(self, word):
         words, weights, types = [], [], []

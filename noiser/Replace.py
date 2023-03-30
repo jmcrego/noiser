@@ -21,6 +21,7 @@ class Replace():
             for l in fd:
                 toks = l.rstrip().split('\t')
                 self.replacements[toks[0]] = toks[1:]
+        logging.info('Built replace {}'.format(name))
 
     def __call__(self,txt):
         txt_lc = txt.lower()
