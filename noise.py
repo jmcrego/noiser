@@ -24,7 +24,7 @@ if __name__ == '__main__':
         random.seed(args.seed)
     
     onmttok = pyonmttok.Tokenizer('conservative', joiner_annotate=False)
-    noiser = Noiser(args,inflection=args.inflection,homophone=args.homophone)
+    noiser = Noiser(args,inflect=args.inflect,homophone=args.homophone)
     
     tic = time.time()
     for l in sys.stdin:

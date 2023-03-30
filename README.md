@@ -1,2 +1,2 @@
 # noiser
-Add noise natural language texts
+Inject noise to natural language texts

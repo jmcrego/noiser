@@ -1,8 +1,8 @@
 import random
 import logging
 from collections import defaultdict
-from Misspell import Misspell
-from Replace import Replace
+from noiser.Misspell import Misspell
+from noiser.Replace import Replace
 
 class Noiser():
     def __init__(self, args, inflect=None, homophone=None):
