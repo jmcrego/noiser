@@ -121,7 +121,7 @@ class Misspell():
         self.w_vowel_change = 10
         self.w_consonne_double = 10
         self.stats_types = defaultdict(int)
-        logging.info('Built Misspell')
+        logging.info('Built misspell')
 
     def __call__(self, word):
         words, weights, types = [], [], []
@@ -210,6 +210,6 @@ class Misspell():
         return words[i], types[i]
     
     def report(self):
-        logging.info('Noise types:')
+        logging.info('#tokens by noise type:')
         for k, v in sorted(self.stats_types.items(), key=lambda item: item[1], reverse=True): #if reverse, sorted in descending order
             logging.info('{}\t{}'.format(v,k))

@@ -36,7 +36,7 @@ class Replace():
         return txt_new, self.name
 
     def report(self):
-        logging.info('Replacements:')
+        #logging.info('Replacements:')
         logging.info('{}\t{}'.format(self.n,self.name))
 
 

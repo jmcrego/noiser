@@ -56,9 +56,10 @@ class Noiser():
         return tok, err
 
     def report(self):
-        logging.info('output {} lines ({} noised) with {} tokens ({} noised)'.format(self.nl,self.nl_noised,self.nt,self.nt_noised))
+        logging.info('Output {} lines ({} noised) with {} tokens ({} noised)'.format(self.nl,self.nl_noised,self.nt,self.nt_noised))
         self.misspell.report()
         self.inflect.report()
         self.hphone.report()
+        logging.info('#sentences by number of noisy tokens:')
         for k, v in sorted(self.stats.items(), key=lambda item: item[0], reverse=False): #if reverse, sorted in descending order
-            logging.info('len={}\t{}'.format(k,v))
+            logging.info('{}\t{}'.format(v,k))
