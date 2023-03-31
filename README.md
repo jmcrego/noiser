@@ -1,2 +1,4 @@
 # noiser
-Inject noise to natural language texts
+Inject noise into natural language texts
+
+* Misspells
