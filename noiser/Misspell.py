@@ -209,7 +209,7 @@ class Misspell():
         #logging.debug('{} => {} [{}]'.format(word,words[i],types[i]))
         return words[i], types[i]
     
-    def report(self):
+    def report(self,ntokens):
         logging.info('#tokens by noise type:')
         for k, v in sorted(self.stats_types.items(), key=lambda item: item[1], reverse=True): #if reverse, sorted in descending order
-            logging.info('{}\t{}'.format(v,k))
+            logging.info('{}\t{}\t{:.2f}%'.format(v,k,100.0*v/ntokens))

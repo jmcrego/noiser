@@ -35,8 +35,7 @@ class Replace():
         self.n += 1
         return txt_new, self.name
 
-    def report(self):
+    def report(self, ntokens):
         #logging.info('Replacements:')
-        logging.info('{}\t{}'.format(self.n,self.name))
-
+        logging.info('{}\t{}\t{:.2f}%'.format(self.n,self.name,100.0*self.n/ntokens))
 

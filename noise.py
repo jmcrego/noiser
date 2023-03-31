@@ -33,6 +33,7 @@ if __name__ == '__main__':
     for l in sys.stdin:
         tok, err = noiser(onmttok(l.rstrip()))
         print(json.dumps({'tokens': tok, 'err_tags': err}, ensure_ascii=False))
+        #print(' '.join(tok) + '\t' + ' '.join(map(str,err)))
     toc = time.time()
     logging.info('Done {:.2f} seconds'.format(toc-tic))
     noiser.report()
