@@ -167,7 +167,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('config', type=str, help="yaml config file")
     parser.add_argument('-i', type=str, default=None, help="input file (stdin)")
-    parser.add_argument('-debug', action='store_true', help='Debug mode')
+    parser.add_argument('-debug', action='store_true', help='debug mode')
     args = parser.parse_args()
     logging.basicConfig(format='[%(asctime)s.%(msecs)03d] %(levelname)s %(message)s', datefmt='%Y-%m-%d_%H:%M:%S', level=getattr(logging, 'INFO' if not args.debug else 'DEBUG'), filename=None)
 
