@@ -5,7 +5,7 @@ preprocess:
     max_char_len: 0
     
 noiser:
-    seed: 23
+    seed: 234
     inflect: resources/Morphalou3.1_CSV.csv.inflect
     hphone: resources/Morphalou3.1_CSV.csv.homophone
     max_noise_ratio: 0.5

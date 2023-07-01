@@ -3,6 +3,8 @@ import logging
 import unicodedata
 from collections import defaultdict
 
+JOINER = '￭'
+
 PUNCTUATION = ',.!?:;()\'"'
 PUNCTUATION_CHANGE = {
     ',': '',
@@ -136,33 +138,34 @@ class Misspell():
         self.weights = weights
         logging.info('Built Misspell')
 
-    def punctuation(self, txt, join):
-        if txt in PUNCTUATION:
+    def punctuation(self, txt):
+        txt_without_joiners = txt.replace(JOINER,'')
+        if txt_without_joiners in PUNCTUATION:
             p = random.random()
-            if sum(join) == 2: #True, True
+            if txt[0] == JOINER and txt[-1] == JOINER: #True, True
                 if p < 0.5:
-                    return txt, [False, True], 'punct:Lsplit'
+                    return txt_without_joiners + JOINER, 'punct:Lsplit'
                 else:
-                    return txt, [True, False], 'punct:Rsplit'
-            elif sum(join) == 1:
-                if join[0]: #True, False
+                    return JOINER + txt_without_joiners, 'punct:Rsplit'
+            elif txt[0] == JOINER or txt[-1] == JOINER:
+                if txt[0] == JOINER: #True, False
                     if p < 0.5:
-                        return txt, [False, False], 'punct:Lsplit'
+                        return txt_without_joiners, 'punct:Lsplit'
                     else:
-                        return txt, [False, True], 'punct:LsplitRjoin'
-                elif join[1]: #False, True
+                        return txt_without_joiners + JOINER, 'punct:LsplitRjoin'
+                elif txt[-1] == JOINER: #False, True
                     if p < 0.5:
-                        return txt, [False, False], 'punct:Rsplit'
+                        return txt_without_joiners, 'punct:Rsplit'
                     else:
-                        return txt, [True, False], 'punct:LjoinRsplit'
+                        return JOINER + txt_without_joiners, 'punct:LjoinRsplit'
             else: #False, False
                 if p < 1./3.:
-                    return txt, [True, False], 'punct:Ljoin'
+                    return JOINER + txt_without_joiners, 'punct:Ljoin'
                 elif p < 2./3.:
-                    return txt, [False, True], 'punct:Rjoin'
+                    return txt_without_joiners + JOINER, 'punct:Rjoin'
                 else:
-                    return txt, [True, True], 'punct:LjoinRjoin'
-        return None, None, None
+                    return JOINER + txt_without_joiners + JOINER, 'punct:LjoinRjoin'
+        return None, None
                 
     def __call__(self, word):
         words, types, weights = [], [], []

@@ -1,4 +1,5 @@
 #coding: utf-8
+import os
 import re
 import sys
 import logging
@@ -20,6 +21,7 @@ class Preprocess():
         self.min_char_rate = config['min_char_rate'] #minimum rate of valid chars (see NONVALID_CHARS regex)
         self.min_char_len = config['min_char_len']
         self.max_char_len = config['max_char_len']
+        logging.info('built Preprocess')
 
     def __iter__(self):
         for txt in self.stream:
@@ -71,6 +73,9 @@ class Preprocess():
 class InputStream:
     """Read lines from an input stream."""
     def __init__(self, fin=None):
+        if fin is not None and not os.path.isfile(fin):
+            logging.error('config file does not exist: {}'.format(fin))
+            sys.exit()
         self._fin = fin
 
     def __iter__(self):
