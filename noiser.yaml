@@ -1,0 +1,31 @@
+
+preprocess:
+    min_char_rate: 0.75
+    min_char_len: 1
+    max_char_len: 0
+    
+noiser:
+    seed: 23
+    inflect: resources/Morphalou3.1_CSV.csv.inflect
+    hphone: resources/Morphalou3.1_CSV.csv.homophone
+    max_noise_ratio: 0.5
+    max_noises_per_sentence: 5
+    every: 100
+    punctuation: true
+    weights:
+        inflect: 500
+        hphone: 100
+        char_repeat: 1
+        char_delete: 5
+        char_reduce: 100
+        char_swap: 5
+        char_keyboard: 2
+        char_diacritic: 100
+        char_lowercase: 100
+        char_uppercase: 1
+        word_lowercase: 100
+        word_uppercase: 1
+        word_lowercase_first: 10
+        word_uppercase_first: 10
+        vowel_change: 10
+        consonne_double: 10
