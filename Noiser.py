@@ -10,11 +10,11 @@ from Replace import Replace
 from Preprocess import Preprocess, InputStream
 from collections import defaultdict
 
-JOINER = '￭'
-NO_JOINER = '·'
-NOISED = '+'
-NO_NOISED = '-'
 INITIAL_VALUE = 0
+JOINER = '￭'
+#NO_JOINER = '·'
+#NOISED = '+'
+#NO_NOISED = '-'
 
 def read_config(file):
     with open(file, 'r') as stream:
@@ -81,7 +81,7 @@ class Noiser():
             n_noises_to_inject = random.randrange(0,min(self.max_noises_per_sentence+1,int(1+len(toks)*self.max_noise_ratio)))
             if n_noises_to_inject == 0:
                 self.n_noises2n[len(noises_injected)] += 1
-                yield raw
+                yield raw, raw
                 continue
 
             indexs = [i for i in range(len(toks))]
@@ -145,7 +145,7 @@ class Noiser():
             if noised != raw:
                 logging.debug('TOK2 {}'.format([t(joiners=True) for t in toks]))
                 logging.debug("OUT {}".format(noised))
-            yield noised#, noises_injected
+            yield noised, raw#, noises_injected
         toc = time.time()
         self.report(toc-tic)
 
@@ -175,6 +175,6 @@ if __name__ == '__main__':
         datastream = Preprocess(datastream, config['preprocess'])
     if 'noiser' in config:
         datastream = Noiser(datastream, config['noiser'])
-    for l in datastream:
-        print(l)
+    for n, l in datastream:
+        print(n + "\t" + l)
 

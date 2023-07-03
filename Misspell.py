@@ -21,21 +21,21 @@ PUNCTUATION_CHANGE = {
 
 CONSONNE_DOUBLE = 'dcflsptmnrg' #bkz
 
-VOWEL_CHANGE = {
-    'a': 'eiouy',
-    'e': 'aiouy',
-    'i': 'aeouy',
-    'o': 'aeiuy',
-    'u': 'aeioy',
-    'y': 'aeiou',
+VOWEL_CHANGE = { #repetitions imply additional probability
+    'a': 'eeiouy',
+    'e': 'aaiouy',
+    'i': 'aeouyy',
+    'o': 'aeiuuy',
+    'u': 'aeioyy',
+    'y': 'aeiiou',
 }
 
-DIACRITIC_CHANGE = {
-    'a': 'aàáâä',
-    'e': 'eéèêë',
-    'i': 'iíìîï',
-    'o': 'oóòôö',
-    'u': 'uúùûü',
+DIACRITIC_CHANGE = { #repetitions imply additional probability
+    'a': 'aaaaààááâä',
+    'e': 'eeeeèèééêë',
+    'i': 'iiiiííììîï',
+    'o': 'ooooóóòòôö',
+    'u': 'uuuuúúùùûü',
 }
 
 DIACRITIC_NORM = {
@@ -46,33 +46,33 @@ DIACRITIC_NORM = {
     'u': 'u', 'ù': 'u', 'ú': 'u', 'û': 'u', 'ü': 'u',
 }
 
-KEYBOARD_CHANGE = {
-    'q': 'was',
-    'w': 'qesad',
-    'e': 'wrdsfa',
-    'r': 'tfdgs',
-    't': 'rygfhd',
-    'y': 'tuhgjf',
+KEYBOARD_CHANGE = { ### querty keyboard
+    'q': 'wa12',
+    'w': 'qesa23',
+    'e': 'wrdsa34',
+    'r': 'etfd45',
+    't': 'rygf56',
+    'y': 'tuhg67',
     'u': 'yijhkg',
-    'i': 'uokjl',
-    'o': 'iplkj',
-    'p': "olk",
-    'a': 'szqwxe',
-    's': 'adxwezcqrf',
-    'd': 'fscerxvwtzg',
-    'f': 'dgvrtcbeyxs',
-    'g': 'fhbtyvnrucd',
-    'h': 'gjnyubmtiv',
-    'j': 'hkmuinyo',
-    'k': 'jliomu',
-    'l': 'kopim',
-    'z': 'xasd',
-    'x': 'zcsdaf',
-    'c': 'vxdfsg',
-    'v': 'cbfgdh',
-    'b': 'vnghfj',
-    'n': 'bmhjgk',
-    'm': 'njkhl',
+    'i': 'uokj89',
+    'o': 'iplk90',
+    'p': "ol0-[;",
+    'a': 'szqw',
+    's': 'adxwez',
+    'd': 'erfcxs',
+    'f': 'rtgvcd',
+    'g': 'tyhbvf',
+    'h': 'yujnbg',
+    'j': 'uikmnh',
+    'k': 'iol,mj',
+    'l': 'op;.,k',
+    'z': 'asx',
+    'x': 'zsdc',
+    'c': 'xdfv',
+    'v': 'cfgb',
+    'b': 'vghn',
+    'n': 'bhjm',
+    'm': 'njk,',
 }
 
 def change_diacritic(letter):
@@ -85,7 +85,7 @@ def change_diacritic(letter):
     if letter_norm not in DIACRITIC_CHANGE:
         return None
     new_letters = list(DIACRITIC_CHANGE[letter_norm])
-    if letter in new_letters:
+    while letter in new_letters:
         new_letters.remove(letter)
     random.shuffle(new_letters)
     new_letter = new_letters[0]
@@ -100,7 +100,7 @@ def change_keyboard(letter):
     if letter not in KEYBOARD_CHANGE:
         return None
     new_letters = list(KEYBOARD_CHANGE[letter])
-    if letter in new_letters:
+    while letter in new_letters:
         new_letters.remove(letter)
     random.shuffle(new_letters)
     if is_upper:
@@ -114,7 +114,7 @@ def change_vowel(letter):
     if letter not in VOWEL_CHANGE:
         return None
     new_letters = list(VOWEL_CHANGE[letter])
-    if letter in new_letters:
+    while letter in new_letters:
         new_letters.remove(s[i])
     random.shuffle(new_letters)
     if is_upper:
