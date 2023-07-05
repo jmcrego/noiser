@@ -12,9 +12,6 @@ from collections import defaultdict
 
 INITIAL_VALUE = 0
 JOINER = '￭'
-#NO_JOINER = '·'
-#NOISED = '+'
-#NO_NOISED = '-'
 
 def read_config(file):
     with open(file, 'r') as stream:
@@ -26,20 +23,14 @@ def read_config(file):
     return d
 
 class Tok():
-    def __init__(self, t, noised=False, ljoin=None, rjoin=None):
-        self.ljoin = t.startswith(JOINER)
-        self.rjoin = t.endswith(JOINER)
-        self.noised = noised
-        self.tok = t
-        if ljoin is not None and ljoin:
-            self.tok = JOINER + self.tok
-        if rjoin is not None and rjoin:
-            self.tok = self.tok + JOINER
+    def __init__(self, t, ljoiner=None, rjoiner=None):
+        self.ljoiner = t.startswith(JOINER) if ljoiner is None else ljoiner
+        self.rjoiner = t.endswith(JOINER) if rjoiner is None else rjoiner
+        self.tok = t.replace(JOINER,'') ### keep the token without JOINERs
+        assert len(self.tok)
             
     def __call__(self, joiners=False):
-        beg = 1 if not joiners and self.ljoin else 0
-        end = -1 if not joiners and self.rjoin else len(self.tok)
-        return self.tok[beg:end]
+        return (JOINER if joiners and self.ljoiner else '') + self.tok + (JOINER if joiners and self.rjoiner else '')
 
 def factory_INITIAL_VALUE():
     return INITIAL_VALUE
@@ -88,21 +79,22 @@ class Noiser():
             random.shuffle(indexs)
             for index in indexs:
                 
-                if len(noises_injected) >= n_noises_to_inject:
+                if len(noises_injected) >= n_noises_to_inject: ### already enough
                     break
 
-                if not toks[index]().isalpha(): ### toks[index] is NOT an alpha word
+                if not toks[index]().isalpha(): ### toks[index] is NOT an fully alpha string
                     if self.punctuation:
                         txt, type = self.misspell.punctuation(toks[index](joiners=True)) ### in this case txt contains joiners
                         if txt is not None:
                             tok_txt = toks[index](joiners=True)+' '+txt
-                            self.pair2lastsent[tok_txt] = self.n_sentences
-                            self.types2n[type] += 1
-                            toks[index] = Tok(txt, noised=True)
-                            noises_injected.append(tok_txt+' '+type)
-                            logging.debug('REPLACE {} {} [{}]'.format(tok_txt, type, self.pair2lastsent[tok_txt]))
+                            if self.n_sentences - self.pair2lastsent[tok_txt] >= self.every:
+                                self.pair2lastsent[tok_txt] = self.n_sentences
+                                self.types2n[type] += 1
+                                toks[index] = Tok(txt) #already contains the right joiners
+                                noises_injected.append(tok_txt+' '+type)
+                                logging.debug('REPLACE {} {} [{}]'.format(tok_txt, type, self.pair2lastsent[tok_txt]))
                         
-                else: ### toks[index] is an alpha word
+                else: ### toks[index] is a fully alpha string (try several noises)
                     replacement_txts = []
                     replacement_types = []
                     replacement_weights = []
@@ -132,11 +124,12 @@ class Noiser():
                             replacement_weights.append(weights[i])
 
                     if len(replacement_txts):
+                        ### pick up one of the noises in replacement_txts
                         i = random.choices([i for i in range(len(replacement_txts))], replacement_weights)[0]
                         tok_txt = toks[index]()+' '+replacement_txts[i]
                         self.pair2lastsent[tok_txt] = self.n_sentences
                         self.types2n[replacement_types[i]] += 1
-                        toks[index] = Tok(replacement_txts[i], noised=True, ljoin=toks[index].ljoin, rjoin=toks[index].rjoin)
+                        toks[index] = Tok(replacement_txts[i], ljoiner=toks[index].ljoiner, rjoiner=toks[index].rjoiner)
                         noises_injected.append(tok_txt+' '+replacement_types[i])
                         logging.debug('REPLACE {} {} [{}]'.format(tok_txt, replacement_types[i], self.pair2lastsent[tok_txt]))
             
